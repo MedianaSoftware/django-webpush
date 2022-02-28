@@ -39,5 +39,6 @@ class SubscriptionForm(forms.ModelForm):
         fields = ('endpoint', 'auth', 'p256dh', 'browser', 'user_agent')
 
     def get_or_save(self):
-        subscription, created = SubscriptionInfo.objects.get_or_create(**self.cleaned_data)
+        user_agent = self.cleaned_data.pop('user_agent')
+        subscription, created = SubscriptionInfo.objects.update_or_create(**self.cleaned_data, defaults={ 'user_agent':user_agent })
         return subscription
